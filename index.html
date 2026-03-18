@@ -4,205 +4,326 @@
 <meta charset="utf-8">
 <title>مرجع HTML - حسام</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0f14;
-    --surface: #13161e;
-    --card: #1a1e2a;
-    --border: #252a38;
-    --accent: #00e5ff;
-    --accent3: #a855f7;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --code-bg: #090b10;
+    --bg: #0f1117;
+    --surface: #13161f;
+    --card: #1a1d28;
+    --card-hover: #1e2133;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(66,133,244,0.35);
+
+    --blue:   #4285F4;
+    --red:    #EA4335;
+    --yellow: #FBBC04;
+    --green:  #34A853;
+
+    --text:   #e8eaf0;
+    --muted:  #8892a4;
+    --mono:   'JetBrains Mono', monospace;
+    --sans:   'Plus Jakarta Sans', 'Cairo', sans-serif;
+
+    --code-bg: #090c14;
+    --sidebar-w: 220px;
+    --search-h: 56px;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Cairo', sans-serif;
+    font-family: var(--sans);
     min-height: 100vh;
+    line-height: 1.6;
   }
+
+  /* ── Grid background ── */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     background-image:
-      linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
-    background-size: 40px 40px;
+      linear-gradient(rgba(66,133,244,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(66,133,244,0.03) 1px, transparent 1px);
+    background-size: 44px 44px;
     pointer-events: none;
     z-index: 0;
   }
 
+  /* ════════════════════════════════
+     HEADER
+  ════════════════════════════════ */
   header {
     position: relative;
     z-index: 10;
-    padding: 50px 40px 36px;
+    padding: 48px 40px 36px;
     text-align: center;
     border-bottom: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(0,229,255,0.06) 0%, transparent 100%);
+    background: linear-gradient(180deg, rgba(66,133,244,0.07) 0%, transparent 100%);
   }
-  .logo-line {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--accent);
+
+  /* GDG color stripe */
+  .color-stripe {
+    height: 3px;
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  .cs-b { flex: 1; background: var(--blue); }
+  .cs-r { flex: 1; background: var(--red); }
+  .cs-y { flex: 1; background: var(--yellow); }
+  .cs-g { flex: 1; background: var(--green); }
+
+  .header-gdg {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
     text-transform: uppercase;
-    display: block;
-    margin-bottom: 14px;
-    opacity: 0.8;
+    margin-bottom: 18px;
   }
+  .header-gdg .g1 { color: var(--blue); }
+  .header-gdg .g2 { color: var(--red); }
+  .header-gdg .g3 { color: var(--yellow); }
+  .header-gdg .g4 { color: var(--green); }
+  .header-gdg .sep { color: var(--muted); margin: 0 6px; }
+
   header h1 {
-    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-size: clamp(2rem, 5vw, 3.4rem);
     font-weight: 900;
-    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent3) 100%);
+    background: linear-gradient(135deg, #fff 0%, var(--blue) 55%, #7ab4ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 10px;
-  }
-  header p {
-    color: var(--muted);
-    font-size: 0.9rem;
-    font-family: 'IBM Plex Mono', monospace;
-    direction: ltr;
+    font-family: 'Cairo', sans-serif;
   }
 
+  header p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-family: var(--mono);
+    direction: ltr;
+    opacity: 0.7;
+  }
+
+  /* ════════════════════════════════
+     SEARCH BAR
+  ════════════════════════════════ */
   .search-wrap {
     position: sticky;
-    top: 0;
+    top: 3px;
     z-index: 100;
-    background: rgba(13,15,20,0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(15,17,23,0.92);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
-    padding: 12px 32px;
+    padding: 10px 32px;
+    height: var(--search-h);
+    display: flex;
+    align-items: center;
+  }
+  .search-inner {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .search-inner i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 14px;
+    pointer-events: none;
   }
   .search-wrap input {
     width: 100%;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 18px;
+    border-radius: 10px;
+    padding: 9px 18px 9px 40px;
     color: var(--text);
-    font-family: 'Cairo', sans-serif;
-    font-size: 0.95rem;
+    font-family: var(--sans);
+    font-size: 0.9rem;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    direction: rtl;
   }
-  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(66,133,244,0.12);
+  }
   .search-wrap input::placeholder { color: var(--muted); }
 
+  /* ════════════════════════════════
+     LAYOUT
+  ════════════════════════════════ */
   .layout {
     display: flex;
-    max-width: 1300px;
+    max-width: 1320px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
   }
 
+  /* ════════════════════════════════
+     SIDEBAR
+  ════════════════════════════════ */
   .sidebar {
-    width: 230px;
-    min-width: 230px;
-    padding: 28px 14px;
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    padding: 24px 12px;
     border-left: 1px solid var(--border);
     position: sticky;
-    top: 57px;
-    height: calc(100vh - 57px);
+    top: calc(3px + var(--search-h));
+    height: calc(100vh - 3px - var(--search-h));
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+    scrollbar-color: rgba(255,255,255,0.08) transparent;
   }
+
   .sidebar h2 {
     font-size: 10px;
     letter-spacing: 3px;
     color: var(--muted);
     text-transform: uppercase;
-    margin-bottom: 14px;
-    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 12px;
+    font-family: var(--mono);
     padding-right: 8px;
+    opacity: 0.6;
   }
+
   .sidebar nav { display: flex; flex-direction: column; gap: 2px; }
+
   .sidebar a {
     color: var(--muted);
     text-decoration: none;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
+    font-weight: 500;
     padding: 7px 10px;
-    border-radius: 6px;
+    border-radius: 8px;
     border-right: 2px solid transparent;
     transition: all 0.15s;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 7px;
   }
-  .sidebar a:hover, .sidebar a.active {
-    color: var(--accent);
-    background: rgba(0,229,255,0.05);
-    border-right-color: var(--accent);
+  .sidebar a .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    opacity: 0.3;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .sidebar a:hover,
+  .sidebar a.active {
+    color: var(--blue);
+    background: rgba(66,133,244,0.08);
+    border-right-color: var(--blue);
+  }
+  .sidebar a:hover .nav-dot,
+  .sidebar a.active .nav-dot {
+    background: var(--blue);
+    opacity: 1;
   }
 
+  /* ════════════════════════════════
+     MAIN
+  ════════════════════════════════ */
   main { flex: 1; padding: 36px 40px; min-width: 0; }
 
+  /* ════════════════════════════════
+     SECTION
+  ════════════════════════════════ */
   .section {
     margin-bottom: 56px;
-    scroll-margin-top: 70px;
+    scroll-margin-top: 80px;
   }
+
   .section-title {
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     padding-bottom: 14px;
     border-bottom: 1px solid var(--border);
   }
+
   .section-icon {
-    width: 42px; height: 42px;
+    width: 40px; height: 40px;
     border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
-    background: rgba(0,229,255,0.1);
+    font-size: 1.1rem;
+    background: rgba(66,133,244,0.1);
+    border: 1px solid rgba(66,133,244,0.2);
     flex-shrink: 0;
   }
-  .section-title h2 { font-size: 1.35rem; font-weight: 800; color: #fff; }
-  .section-title span {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
+
+  .section-title h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  .section-title .section-sub {
+    font-family: var(--mono);
+    font-size: 0.7rem;
     color: var(--muted);
     direction: ltr;
     display: block;
     margin-top: 3px;
   }
 
+  /* ════════════════════════════════
+     BLOCK (code card)
+  ════════════════════════════════ */
   .block {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    margin-bottom: 20px;
-    transition: border-color 0.2s;
+    margin-bottom: 18px;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .block:hover { border-color: rgba(0,229,255,0.3); }
+  .block:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 4px 24px rgba(66,133,244,0.08);
+  }
 
+  /* Block top bar */
   .block-label {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 18px;
-    background: rgba(0,0,0,0.25);
+    padding: 10px 16px;
+    background: rgba(0,0,0,0.3);
     border-bottom: 1px solid var(--border);
   }
-  .block-label .dot-row { display: flex; gap: 6px; }
-  .block-label .dot-row span { width: 10px; height: 10px; border-radius: 50%; display: block; }
-  .block-label .dot-row span:nth-child(1) { background: #ef4444; }
-  .block-label .dot-row span:nth-child(2) { background: #f59e0b; }
-  .block-label .dot-row span:nth-child(3) { background: #22c55e; }
-  .block-label .file-name {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
+  .dot-row { display: flex; gap: 6px; }
+  .dot-row span { width: 10px; height: 10px; border-radius: 50%; display: block; }
+  .dot-row span:nth-child(1) { background: var(--red); }
+  .dot-row span:nth-child(2) { background: var(--yellow); }
+  .dot-row span:nth-child(3) { background: var(--green); }
+  .file-name {
+    font-family: var(--mono);
+    font-size: 0.7rem;
     color: var(--muted);
     direction: ltr;
     margin-right: auto;
   }
 
+  /* Code area */
   .code-area {
     padding: 20px 22px;
     background: var(--code-bg);
@@ -210,73 +331,87 @@
     direction: ltr;
   }
   .code-area pre {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
-    line-height: 1.85;
-    color: #94a3b8;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: var(--muted);
     white-space: pre;
     tab-size: 2;
   }
 
-  .t  { color: #60a5fa; }
-  .a  { color: #f59e0b; }
-  .v  { color: #34d399; }
-  .cm { color: #4ade80; font-style: italic; }
-  .s  { color: #e2e8f0; }
+  /* Syntax highlight */
+  .t  { color: #4285F4; }       /* tags → blue */
+  .a  { color: #FBBC04; }       /* attrs → yellow */
+  .v  { color: #34A853; }       /* values → green */
+  .cm { color: #52c98c; font-style: italic; }
+  .s  { color: #e8eaf0; }       /* text → white */
 
+  /* Explanation table */
   .explain-area {
-    padding: 0 22px 20px;
+    padding: 0 20px 18px;
     background: var(--card);
   }
   .explain-area table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.83rem;
+    font-size: 0.82rem;
     margin-top: 4px;
   }
   .explain-area table th {
     background: rgba(0,0,0,0.2);
     color: var(--muted);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.68rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
     letter-spacing: 2px;
     text-align: right;
     padding: 8px 12px;
     border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
   }
   .explain-area table td {
     padding: 8px 12px;
-    border-bottom: 1px solid rgba(37,42,56,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
     vertical-align: top;
-    line-height: 1.6;
+    line-height: 1.65;
   }
   .explain-area table tr:last-child td { border-bottom: none; }
+  .explain-area table tr:hover td { background: rgba(66,133,244,0.03); }
   .explain-area table td:first-child {
-    font-family: 'IBM Plex Mono', monospace;
-    color: var(--accent);
+    font-family: var(--mono);
+    color: var(--blue);
     direction: ltr;
     white-space: nowrap;
     width: 38%;
+    font-size: 0.76rem;
   }
   .explain-area table td:last-child { color: var(--muted); }
 
+  /* Tip box */
   .tip {
-    margin: 0 22px 18px;
-    background: rgba(0,229,255,0.05);
-    border: 1px solid rgba(0,229,255,0.15);
+    margin: 0 20px 16px;
+    background: rgba(66,133,244,0.06);
+    border: 1px solid rgba(66,133,244,0.18);
     border-radius: 8px;
     padding: 10px 14px;
-    font-size: 0.82rem;
-    color: rgba(0,229,255,0.85);
-    display: flex; gap: 8px;
+    font-size: 0.8rem;
+    color: rgba(66,133,244,0.9);
+    display: flex;
+    gap: 8px;
     line-height: 1.6;
   }
-  .tip::before { content: '&#x1F4A1;'; flex-shrink: 0; }
+  .tip-icon { flex-shrink: 0; }
 
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  /* ════════════════════════════════
+     SCROLLBAR
+  ════════════════════════════════ */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(66,133,244,0.4); }
 
+  /* ════════════════════════════════
+     RESPONSIVE
+  ════════════════════════════════ */
   @media (max-width: 768px) {
     .sidebar { display: none; }
     main { padding: 24px 16px; }
@@ -287,37 +422,56 @@
 </head>
 <body>
 
+<!-- GDG Color Stripe -->
+<div class="color-stripe">
+  <span class="cs-b"></span>
+  <span class="cs-r"></span>
+  <span class="cs-y"></span>
+  <span class="cs-g"></span>
+</div>
+
 <header>
-  <span class="logo-line">HTML Full Reference — by Hossam</span>
+  <div class="header-gdg">
+    <span class="g1">G</span><span class="g2">D</span><span class="g3">G</span>
+    <span class="sep">·</span>
+    <span style="color:#e8eaf0;letter-spacing:2px;">AOU</span>
+    <span class="sep">—</span>
+    <span style="color:var(--muted);font-weight:400;letter-spacing:2px;">HTML REF</span>
+  </div>
   <h1>مرجع HTML الكامل</h1>
-  <p>&lt;!-- الكود الأصلي + الشرح في مكان واحد --&gt;</p>
+  <p>&lt;!-- الكود الأصلي + الشرح في مكان واحد — by Hossam --&gt;</p>
 </header>
 
 <div class="search-wrap">
-  <input type="text" id="search" placeholder="ابحث عن أي تاج أو خاصية...">
+  <div class="search-inner">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="search" placeholder="ابحث عن أي تاج أو خاصية...">
+  </div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <div class="layout">
 
   <aside class="sidebar">
     <h2>المحتوى</h2>
     <nav id="sidenav">
-      <a href="#s-meta">الـ Meta Tags</a>
-      <a href="#s-text">النصوص والعناوين</a>
-      <a href="#s-format">تنسيق النص</a>
-      <a href="#s-img">الصور</a>
-      <a href="#s-audio">الصوت</a>
-      <a href="#s-video">الفيديو</a>
-      <a href="#s-table">الجداول</a>
-      <a href="#s-lists">القوائم</a>
-      <a href="#s-containers">الحاويات</a>
-      <a href="#s-links">الروابط</a>
-      <a href="#s-form">النماذج</a>
-      <a href="#s-inputs">أنواع الـ Input</a>
-      <a href="#s-radio">Radio & Checkbox</a>
-      <a href="#s-select">Select & Datalist</a>
-      <a href="#s-textarea">Textarea</a>
-      <a href="#s-iframe">Iframe</a>
+      <a href="#s-meta"><span class="nav-dot"></span>الـ Meta Tags</a>
+      <a href="#s-text"><span class="nav-dot"></span>النصوص والعناوين</a>
+      <a href="#s-format"><span class="nav-dot"></span>تنسيق النص</a>
+      <a href="#s-img"><span class="nav-dot"></span>الصور</a>
+      <a href="#s-audio"><span class="nav-dot"></span>الصوت</a>
+      <a href="#s-video"><span class="nav-dot"></span>الفيديو</a>
+      <a href="#s-table"><span class="nav-dot"></span>الجداول</a>
+      <a href="#s-lists"><span class="nav-dot"></span>القوائم</a>
+      <a href="#s-containers"><span class="nav-dot"></span>الحاويات</a>
+      <a href="#s-links"><span class="nav-dot"></span>الروابط</a>
+      <a href="#s-form"><span class="nav-dot"></span>النماذج</a>
+      <a href="#s-inputs"><span class="nav-dot"></span>أنواع الـ Input</a>
+      <a href="#s-radio"><span class="nav-dot"></span>Radio & Checkbox</a>
+      <a href="#s-select"><span class="nav-dot"></span>Select & Datalist</a>
+      <a href="#s-textarea"><span class="nav-dot"></span>Textarea</a>
+      <a href="#s-iframe"><span class="nav-dot"></span>Iframe</a>
     </nav>
   </aside>
 
@@ -327,7 +481,10 @@
     <section class="section" id="s-meta">
       <div class="section-title">
         <div class="section-icon">🏗️</div>
-        <div><h2>الـ Meta Tags وبنية الصفحة</h2><span>&lt;head&gt; &lt;meta&gt; &lt;link&gt;</span></div>
+        <div>
+          <h2>الـ Meta Tags وبنية الصفحة</h2>
+          <span class="section-sub">&lt;head&gt; &lt;meta&gt; &lt;link&gt;</span>
+        </div>
       </div>
       <div class="block">
         <div class="block-label">
@@ -363,7 +520,10 @@
     <section class="section" id="s-text">
       <div class="section-title">
         <div class="section-icon">📝</div>
-        <div><h2>النصوص والعناوين</h2><span>&lt;h1&gt; &lt;p&gt; &lt;span&gt; &lt;pre&gt; &lt;br&gt; &lt;hr&gt;</span></div>
+        <div>
+          <h2>النصوص والعناوين</h2>
+          <span class="section-sub">&lt;h1&gt; &lt;p&gt; &lt;span&gt; &lt;pre&gt; &lt;br&gt; &lt;hr&gt;</span>
+        </div>
       </div>
       <div class="block">
         <div class="block-label">
@@ -411,7 +571,10 @@
     <section class="section" id="s-format">
       <div class="section-title">
         <div class="section-icon">✏️</div>
-        <div><h2>تنسيق النص</h2><span>&lt;b&gt; &lt;strong&gt; &lt;i&gt; &lt;em&gt; &lt;mark&gt; &lt;del&gt; &lt;ins&gt; &lt;sub&gt; &lt;sup&gt; ...</span></div>
+        <div>
+          <h2>تنسيق النص</h2>
+          <span class="section-sub">&lt;b&gt; &lt;strong&gt; &lt;i&gt; &lt;em&gt; &lt;mark&gt; &lt;del&gt; &lt;ins&gt; &lt;sub&gt; &lt;sup&gt; ...</span>
+        </div>
       </div>
       <div class="block">
         <div class="block-label">
@@ -466,7 +629,7 @@
     <section class="section" id="s-img">
       <div class="section-title">
         <div class="section-icon">🖼️</div>
-        <div><h2>الصور</h2><span>&lt;img&gt;</span></div>
+        <div><h2>الصور</h2><span class="section-sub">&lt;img&gt;</span></div>
       </div>
       <div class="block">
         <div class="block-label">
@@ -488,7 +651,7 @@
             <tr><td>border="5"</td><td>حدود حول الصورة</td></tr>
           </table>
         </div>
-        <div class="tip">العنصر ده مش بياخد السطر كله — inline element — ممكن نحط صورة من الإنترنت في src</div>
+        <div class="tip"><span class="tip-icon">💡</span> العنصر ده مش بياخد السطر كله — inline element — ممكن نحط صورة من الإنترنت في src</div>
       </div>
     </section>
 
@@ -496,7 +659,7 @@
     <section class="section" id="s-audio">
       <div class="section-title">
         <div class="section-icon">🔊</div>
-        <div><h2>الصوت</h2><span>&lt;audio&gt; &lt;source&gt;</span></div>
+        <div><h2>الصوت</h2><span class="section-sub">&lt;audio&gt; &lt;source&gt;</span></div>
       </div>
       <div class="block">
         <div class="block-label">
@@ -528,7 +691,7 @@
     <section class="section" id="s-video">
       <div class="section-title">
         <div class="section-icon">🎬</div>
-        <div><h2>الفيديو</h2><span>&lt;video&gt; &lt;source&gt; &lt;track&gt;</span></div>
+        <div><h2>الفيديو</h2><span class="section-sub">&lt;video&gt; &lt;source&gt; &lt;track&gt;</span></div>
       </div>
       <div class="block">
         <div class="block-label">
@@ -578,7 +741,10 @@
     <section class="section" id="s-table">
       <div class="section-title">
         <div class="section-icon">📊</div>
-        <div><h2>الجداول</h2><span>&lt;table&gt; &lt;caption&gt; &lt;thead&gt; &lt;tbody&gt; &lt;tfoot&gt; &lt;tr&gt; &lt;th&gt; &lt;td&gt;</span></div>
+        <div>
+          <h2>الجداول</h2>
+          <span class="section-sub">&lt;table&gt; &lt;caption&gt; &lt;thead&gt; &lt;tbody&gt; &lt;tfoot&gt; &lt;tr&gt; &lt;th&gt; &lt;td&gt;</span>
+        </div>
       </div>
       <div class="block">
         <div class="block-label">
@@ -639,14 +805,10 @@
     <section class="section" id="s-lists">
       <div class="section-title">
         <div class="section-icon">📋</div>
-        <div><h2>القوائم</h2><span>&lt;ul&gt; &lt;ol&gt; &lt;dl&gt; &lt;li&gt; &lt;dt&gt; &lt;dd&gt;</span></div>
+        <div><h2>القوائم</h2><span class="section-sub">&lt;ul&gt; &lt;ol&gt; &lt;dl&gt; &lt;li&gt; &lt;dt&gt; &lt;dd&gt;</span></div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">ul — unordered list</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">ul — unordered list</div></div>
         <div class="code-area"><pre><span class="t">&lt;ul&gt;</span>
     <span class="t">&lt;li&gt;</span><span class="s">1</span><span class="t">&lt;/li&gt;</span>
     <span class="t">&lt;li&gt;</span><span class="s">2</span><span class="t">&lt;/li&gt;</span>
@@ -660,12 +822,8 @@
           </table>
         </div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">ol — ordered list</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">ol — ordered list</div></div>
         <div class="code-area"><pre><span class="t">&lt;ol</span> <span class="a">type</span>=<span class="v">"A"</span> <span class="a">reversed</span> <span class="a">start</span>=<span class="v">"4"</span><span class="t">&gt;</span>
     <span class="t">&lt;li&gt;</span><span class="s">1</span><span class="t">&lt;/li&gt;</span>
     <span class="t">&lt;li&gt;</span><span class="s">2</span><span class="t">&lt;/li&gt;</span>
@@ -681,12 +839,8 @@
           </table>
         </div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">dl — definition list</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">dl — definition list</div></div>
         <div class="code-area"><pre><span class="t">&lt;dl&gt;</span>
     <span class="t">&lt;dt&gt;</span><span class="s">1</span><span class="t">&lt;/dt&gt;</span>
     <span class="t">&lt;dd&gt;</span><span class="s">2</span><span class="t">&lt;/dd&gt;</span>
@@ -709,44 +863,24 @@
     <section class="section" id="s-containers">
       <div class="section-title">
         <div class="section-icon">🧱</div>
-        <div><h2>الحاويات والتخطيط</h2><span>&lt;div&gt; &lt;header&gt; &lt;nav&gt; &lt;section&gt; &lt;article&gt; &lt;aside&gt; &lt;footer&gt;</span></div>
+        <div>
+          <h2>الحاويات والتخطيط</h2>
+          <span class="section-sub">&lt;div&gt; &lt;header&gt; &lt;nav&gt; &lt;section&gt; &lt;article&gt; &lt;aside&gt; &lt;footer&gt;</span>
+        </div>
       </div>
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">semantic HTML5 layout</div>
-        </div>
-        <div class="code-area"><pre><span class="t">&lt;div&gt;</span>
-    <span class="t">&lt;p&gt;</span><span class="s">1</span><span class="t">&lt;/p&gt;</span>
-<span class="t">&lt;/div&gt;</span>
-
-<span class="t">&lt;header&gt;</span>
-    <span class="t">&lt;p&gt;</span><span class="s">1</span><span class="t">&lt;/p&gt;</span>
-<span class="t">&lt;/header&gt;</span>
-
-<span class="t">&lt;aside&gt;</span>
-    <span class="t">&lt;p&gt;</span><span class="s">1</span><span class="t">&lt;/p&gt;</span>
-<span class="t">&lt;/aside&gt;</span>
-
-<span class="t">&lt;section&gt;</span>
-    <span class="t">&lt;p&gt;</span><span class="s">1</span><span class="t">&lt;/p&gt;</span>
-<span class="t">&lt;/section&gt;</span>
-
-<span class="t">&lt;article&gt;</span>
-    <span class="t">&lt;p&gt;</span><span class="s">1</span><span class="t">&lt;/p&gt;</span>
-<span class="t">&lt;/article&gt;</span>
-
-<span class="t">&lt;footer&gt;</span>
-    <span class="t">&lt;p&gt;</span><span class="s">1</span><span class="t">&lt;/p&gt;</span>
-<span class="t">&lt;/footer&gt;</span>
-
-<span class="t">&lt;nav&gt;</span>
-    <span class="t">&lt;p&gt;</span><span class="s">1</span><span class="t">&lt;/p&gt;</span>
-<span class="t">&lt;/nav&gt;</span></pre></div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">semantic HTML5 layout</div></div>
+        <div class="code-area"><pre><span class="t">&lt;div&gt;</span>     <span class="cm">/* حاوية عامة — block element */</span>
+<span class="t">&lt;header&gt;</span>  <span class="cm">/* رأس الصفحة */</span>
+<span class="t">&lt;aside&gt;</span>   <span class="cm">/* المحتوى الجانبي */</span>
+<span class="t">&lt;section&gt;</span> <span class="cm">/* قسم موضوعي */</span>
+<span class="t">&lt;article&gt;</span> <span class="cm">/* مقال أو بوست مستقل */</span>
+<span class="t">&lt;footer&gt;</span>  <span class="cm">/* تذييل الصفحة */</span>
+<span class="t">&lt;nav&gt;</span>     <span class="cm">/* روابط التنقل */</span></pre></div>
         <div class="explain-area">
           <table>
             <tr><th>التاج</th><th>الشرح</th></tr>
-            <tr><td>&lt;div&gt;</td><td>حاوية للعناصر — بديل div بدون معنى دلالي — block element</td></tr>
+            <tr><td>&lt;div&gt;</td><td>حاوية للعناصر — block element بدون معنى دلالي</td></tr>
             <tr><td>&lt;header&gt;</td><td>بديل عن div — حاوية للعناصر اللي في رأس الصفحة</td></tr>
             <tr><td>&lt;aside&gt;</td><td>بديل عن div — حاوية للمحتوى الجانبي</td></tr>
             <tr><td>&lt;section&gt;</td><td>بديل عن div — حاوية لقسم موضوعي</td></tr>
@@ -755,7 +889,7 @@
             <tr><td>&lt;nav&gt;</td><td>بديل عن div — حاوية لروابط التنقل</td></tr>
           </table>
         </div>
-        <div class="tip">العناصر الدلالية (Semantic HTML5) أفضل من div لأنها بتساعد محركات البحث وإمكانية الوصول</div>
+        <div class="tip"><span class="tip-icon">💡</span> العناصر الدلالية (Semantic HTML5) أفضل من div لأنها بتساعد محركات البحث وإمكانية الوصول</div>
       </div>
     </section>
 
@@ -763,13 +897,10 @@
     <section class="section" id="s-links">
       <div class="section-title">
         <div class="section-icon">🔗</div>
-        <div><h2>الروابط</h2><span>&lt;a href target download mailto tel javascript&gt;</span></div>
+        <div><h2>الروابط</h2><span class="section-sub">&lt;a href target download mailto tel javascript&gt;</span></div>
       </div>
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">anchor element — &lt;a&gt;</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">anchor element — &lt;a&gt;</div></div>
         <div class="code-area"><pre><span class="t">&lt;a</span> <span class="a">href</span>=<span class="v">"#"</span><span class="t">&gt;</span><span class="s">hello</span><span class="t">&lt;/a&gt;</span>
 
 <span class="t">&lt;a</span> <span class="a">target</span>=<span class="v">"_blank"</span>  <span class="a">href</span>=<span class="v">"https://www.google.com"</span><span class="t">&gt;</span><span class="s">google_blank</span><span class="t">&lt;/a&gt;</span>
@@ -806,7 +937,7 @@
             <tr><td>mailto:</td><td>بيفتح برنامج البريد الإلكتروني ويبعت على الميل ده</td></tr>
             <tr><td>tel:</td><td>بيفتح المتصفح للاتصال بالرقم ده</td></tr>
             <tr><td>javascript:alert()</td><td>بينفذ كود JavaScript — هيفتح نافذة منبثقة</td></tr>
-            <tr><td>download="photo"</td><td>بيحدد اسم الملف اللي هيتنزل — لازم يشتغل على سيرفر — ممكن تحط أي حاجة مكان الفيديو وهتنزل</td></tr>
+            <tr><td>download="photo"</td><td>بيحدد اسم الملف اللي هيتنزل — لازم يشتغل على سيرفر</td></tr>
           </table>
         </div>
       </div>
@@ -816,13 +947,10 @@
     <section class="section" id="s-form">
       <div class="section-title">
         <div class="section-icon">📬</div>
-        <div><h2>النماذج</h2><span>&lt;form&gt; &lt;label&gt; &lt;fieldset&gt; &lt;legend&gt;</span></div>
+        <div><h2>النماذج</h2><span class="section-sub">&lt;form&gt; &lt;label&gt; &lt;fieldset&gt; &lt;legend&gt;</span></div>
       </div>
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">form element</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">form element</div></div>
         <div class="code-area"><pre><span class="t">&lt;form</span> <span class="a">action</span>=<span class="v">"test.php"</span> <span class="a">method</span>=<span class="v">"post"</span><span class="t">&gt;</span>
 
     <span class="t">&lt;label</span> <span class="a">for</span>=<span class="v">"TEXT"</span><span class="t">&gt;</span><span class="s">enter text</span><span class="t">&lt;/label&gt;</span>
@@ -864,43 +992,28 @@
     <section class="section" id="s-inputs">
       <div class="section-title">
         <div class="section-icon">⌨️</div>
-        <div><h2>أنواع الـ Input</h2><span>file range color date time number tel url search hidden disabled readonly button reset</span></div>
+        <div>
+          <h2>أنواع الـ Input</h2>
+          <span class="section-sub">file range color date time number tel url search hidden disabled readonly button reset</span>
+        </div>
       </div>
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">all input types</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">all input types</div></div>
         <div class="code-area"><pre><span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"file"</span> <span class="a">placeholder</span>=<span class="v">"file"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"range"</span> <span class="a">min</span>=<span class="v">"2"</span> <span class="a">max</span>=<span class="v">"20"</span> <span class="a">step</span>=<span class="v">"2"</span> <span class="a">value</span>=<span class="v">"10"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"color"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"date"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"time"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"datetime-local"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"month"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"week"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"number"</span> <span class="a">min</span>=<span class="v">"5"</span> <span class="a">max</span>=<span class="v">"15"</span> <span class="a">step</span>=<span class="v">"3"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"tel"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"url"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"search"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">id</span>=<span class="v">"hidden"</span> <span class="a">type</span>=<span class="v">"hidden"</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"text"</span> <span class="a">placeholder</span>=<span class="v">"name"</span> <span class="a">disabled</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"text"</span> <span class="a">placeholder</span>=<span class="v">"name"</span> <span class="a">readonly</span><span class="t">&gt;</span>
-
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"submit"</span> <span class="a">value</span>=<span class="v">"submit"</span><span class="t">&gt;</span>
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"button"</span> <span class="a">value</span>=<span class="v">"button"</span><span class="t">&gt;</span>
 <span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"reset"</span>  <span class="a">value</span>=<span class="v">"reset"</span><span class="t">&gt;</span></pre></div>
@@ -908,7 +1021,7 @@
           <table>
             <tr><th>النوع</th><th>الشرح</th></tr>
             <tr><td>file</td><td>لو عايز المستخدم يدخل ملف أو صورة</td></tr>
-            <tr><td>range</td><td>شريط تحكم — min أدنى قيمة / max أعلى قيمة / step قيمة الزيادة / value الافتراضي</td></tr>
+            <tr><td>range</td><td>شريط تحكم — min أدنى / max أعلى / step الزيادة / value الافتراضي</td></tr>
             <tr><td>color</td><td>حقل اختيار لون</td></tr>
             <tr><td>date</td><td>حقل اختيار تاريخ</td></tr>
             <tr><td>time</td><td>حقل اختيار وقت</td></tr>
@@ -922,9 +1035,9 @@
             <tr><td>hidden</td><td>حقل مخفي — يُرجى البحث عنها وفهمها</td></tr>
             <tr><td>disabled</td><td>الحقل معطّل — مش بيتبعت للبرجرامر</td></tr>
             <tr><td>readonly</td><td>الحقل للقراءة فقط — بيتبعت للبرجرامر</td></tr>
-            <tr><td>submit</td><td>بتحدد إنها زر إرسال — بنستخدمه في الفورم بس</td></tr>
-            <tr><td>button</td><td>زر مش بيعمل أي حاجة — بنستخدمه في أي حاجة مش لازم الفورم</td></tr>
-            <tr><td>reset</td><td>بتحدد إنها زر بيمسح البيانات اللي في الحقول — بنستخدمه في الفورم بس</td></tr>
+            <tr><td>submit</td><td>زر إرسال — بنستخدمه في الفورم بس</td></tr>
+            <tr><td>button</td><td>زر عادي — بنستخدمه في أي حاجة</td></tr>
+            <tr><td>reset</td><td>زر بيمسح البيانات اللي في الحقول — بنستخدمه في الفورم بس</td></tr>
           </table>
         </div>
       </div>
@@ -934,14 +1047,10 @@
     <section class="section" id="s-radio">
       <div class="section-title">
         <div class="section-icon">🔘</div>
-        <div><h2>Radio & Checkbox</h2><span>اختيار واحد — اختيار متعدد</span></div>
+        <div><h2>Radio &amp; Checkbox</h2><span class="section-sub">اختيار واحد — اختيار متعدد</span></div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">radio input — استخدام للأسئلة الاختيارية — اختيار واحد فقط تابع</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">radio input — اختيار واحد فقط</div></div>
         <div class="code-area"><pre><span class="t">&lt;form&gt;</span>
     <span class="t">&lt;h3&gt;</span><span class="s">What is your favourite language?</span><span class="t">&lt;/h3&gt;</span>
 
@@ -957,19 +1066,15 @@
           <table>
             <tr><th>الكود</th><th>الشرح</th></tr>
             <tr><td>type="radio"</td><td>RADIO — استخدام للأسئلة الاختيارية — اختيار واحد فقط</td></tr>
-            <tr><td>name="lang"</td><td>كل الاختيارات لازم نفس الاسم عشان يكونوا مرتبطين — المستخدم يختار واحد بس</td></tr>
+            <tr><td>name="lang"</td><td>كل الاختيارات لازم نفس الاسم عشان يكونوا مرتبطين</td></tr>
             <tr><td>value="HTML"</td><td>مش هتظهر — هتروح للمبرمج لو اختار الاختيار ده</td></tr>
             <tr><td>&lt;label for&gt;</td><td>دي اللي هتظهر للمستخدم</td></tr>
-            <tr><td>checked</td><td>بيخلي خيار افتراضي الموقع يكون مختاره — ممكن المستخدم يعدل على</td></tr>
+            <tr><td>checked</td><td>بيخلي خيار افتراضي الموقع يكون مختاره</td></tr>
           </table>
         </div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">checkbox input — اختيار متعدد</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">checkbox input — اختيار متعدد</div></div>
         <div class="code-area"><pre><span class="t">&lt;form&gt;</span>
     <span class="t">&lt;h3&gt;</span><span class="s">What is your favourite language?</span><span class="t">&lt;/h3&gt;</span>
 
@@ -986,7 +1091,7 @@
             <tr><th>الكود</th><th>الشرح</th></tr>
             <tr><td>type="checkbox"</td><td>مربع اختيار — المستخدم يقدر يختار أكتر من خيار</td></tr>
             <tr><td>name="lang"</td><td>نفس الاسم عشان يكونوا مجموعة</td></tr>
-            <tr><td>checked</td><td>بيخلي خيار افتراضي الموقع يكون مختاره — ممكن المستخدم يعدل على</td></tr>
+            <tr><td>checked</td><td>بيخلي خيار افتراضي الموقع يكون مختاره</td></tr>
           </table>
         </div>
       </div>
@@ -996,21 +1101,14 @@
     <section class="section" id="s-select">
       <div class="section-title">
         <div class="section-icon">🔽</div>
-        <div><h2>Select & Datalist</h2><span>&lt;select&gt; &lt;option&gt; &lt;optgroup&gt; &lt;datalist&gt;</span></div>
+        <div><h2>Select &amp; Datalist</h2><span class="section-sub">&lt;select&gt; &lt;option&gt; &lt;optgroup&gt; &lt;datalist&gt;</span></div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">select — قائمة اختيار بسيطة</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">select — قائمة اختيار بسيطة</div></div>
         <div class="code-area"><pre><span class="t">&lt;select</span> <span class="a">name</span>=<span class="v">"lang"</span><span class="t">&gt;</span>
     <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"HTML"</span><span class="t">&gt;</span><span class="s">HTML</span><span class="t">&lt;/option&gt;</span>
     <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"CSS"</span><span class="t">&gt;</span><span class="s">CSS</span><span class="t">&lt;/option&gt;</span>
     <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"JS"</span><span class="t">&gt;</span><span class="s">JS</span><span class="t">&lt;/option&gt;</span>
-    <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"c++"</span><span class="t">&gt;</span><span class="s">c++</span><span class="t">&lt;/option&gt;</span>
-    <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"java"</span><span class="t">&gt;</span><span class="s">java</span><span class="t">&lt;/option&gt;</span>
-    <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"python"</span><span class="t">&gt;</span><span class="s">python</span><span class="t">&lt;/option&gt;</span>
 <span class="t">&lt;/select&gt;</span></pre></div>
         <div class="explain-area">
           <table>
@@ -1020,28 +1118,18 @@
           </table>
         </div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">select with optgroup and multiple</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">select with optgroup and multiple</div></div>
         <div class="code-area"><pre><span class="t">&lt;select</span> <span class="a">name</span>=<span class="v">"lang"</span> <span class="a">multiple</span><span class="t">&gt;</span>
-
     <span class="t">&lt;optgroup</span> <span class="a">label</span>=<span class="v">"web"</span><span class="t">&gt;</span>
         <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"HTML"</span><span class="t">&gt;</span><span class="s">HTML</span><span class="t">&lt;/option&gt;</span>
         <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"CSS"</span><span class="t">&gt;</span><span class="s">CSS</span><span class="t">&lt;/option&gt;</span>
-        <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"JS"</span><span class="t">&gt;</span><span class="s">JS</span><span class="t">&lt;/option&gt;</span>
     <span class="t">&lt;/optgroup&gt;</span>
-
     <span class="t">&lt;optgroup</span> <span class="a">label</span>=<span class="v">"programming"</span><span class="t">&gt;</span>
         <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"c++"</span><span class="t">&gt;</span><span class="s">c++</span><span class="t">&lt;/option&gt;</span>
-        <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"java"</span><span class="t">&gt;</span><span class="s">java</span><span class="t">&lt;/option&gt;</span>
         <span class="t">&lt;option</span> <span class="a">selected</span> <span class="a">value</span>=<span class="v">"python"</span><span class="t">&gt;</span><span class="s">python</span><span class="t">&lt;/option&gt;</span>
     <span class="t">&lt;/optgroup&gt;</span>
-
-<span class="t">&lt;/select&gt;</span>
-<span class="t">&lt;input</span> <span class="a">type</span>=<span class="v">"submit"</span> <span class="a">value</span>=<span class="v">"submit"</span><span class="t">&gt;</span></pre></div>
+<span class="t">&lt;/select&gt;</span></pre></div>
         <div class="explain-area">
           <table>
             <tr><th>الكود</th><th>الشرح</th></tr>
@@ -1051,20 +1139,14 @@
           </table>
         </div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">datalist — قائمة مع بحث</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">datalist — قائمة مع بحث</div></div>
         <div class="code-area"><pre><span class="t">&lt;input</span> <span class="a">list</span>=<span class="v">"language"</span> <span class="a">name</span>=<span class="v">"lang"</span><span class="t">&gt;</span>
 
 <span class="t">&lt;datalist</span> <span class="a">id</span>=<span class="v">"language"</span><span class="t">&gt;</span>
     <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"HTML"</span><span class="t">&gt;</span>
     <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"CSS"</span><span class="t">&gt;</span>
     <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"JS"</span><span class="t">&gt;</span>
-    <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"c++"</span><span class="t">&gt;</span>
-    <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"java"</span><span class="t">&gt;</span>
     <span class="t">&lt;option</span> <span class="a">value</span>=<span class="v">"python"</span><span class="t">&gt;</span>
 <span class="t">&lt;/datalist&gt;</span></pre></div>
         <div class="explain-area">
@@ -1082,13 +1164,10 @@
     <section class="section" id="s-textarea">
       <div class="section-title">
         <div class="section-icon">📄</div>
-        <div><h2>Textarea</h2><span>&lt;textarea&gt;</span></div>
+        <div><h2>Textarea</h2><span class="section-sub">&lt;textarea&gt;</span></div>
       </div>
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">textarea element</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">textarea element</div></div>
         <div class="code-area"><pre><span class="t">&lt;form</span> <span class="a">novalidate</span><span class="t">&gt;</span>
     <span class="t">&lt;textarea</span>
         <span class="a">required</span>
@@ -1124,14 +1203,10 @@
     <section class="section" id="s-iframe">
       <div class="section-title">
         <div class="section-icon">🪟</div>
-        <div><h2>الإطارات المضمّنة</h2><span>&lt;iframe&gt; &lt;object&gt; &lt;embed&gt;</span></div>
+        <div><h2>الإطارات المضمّنة</h2><span class="section-sub">&lt;iframe&gt; &lt;object&gt; &lt;embed&gt;</span></div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">iframe — إضافة صفحات خارجية</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">iframe — إضافة صفحات خارجية</div></div>
         <div class="code-area"><pre><span class="t">&lt;iframe</span>
     <span class="a">src</span>=<span class="v">"https://www.wikipedia.org/"</span>
     <span class="a">width</span>=<span class="v">"300"</span>
@@ -1146,26 +1221,21 @@
         <div class="explain-area">
           <table>
             <tr><th>الخاصية</th><th>الشرح</th></tr>
-            <tr><td>&lt;iframe&gt;</td><td>إطار لموقع أو صفحة — من خلاله نقدر نضيف موقع أو فيديو أو حتى صفحة تانية عندنا</td></tr>
+            <tr><td>&lt;iframe&gt;</td><td>إطار لموقع أو صفحة — من خلاله نقدر نضيف موقع أو فيديو أو حتى صفحة تانية</td></tr>
             <tr><td>src</td><td>الموقع اللي هيتم عرضه في الإطار</td></tr>
             <tr><td>width / height</td><td>عرض وطول الإطار</td></tr>
             <tr><td>frameborder="0"</td><td>بيخفي الحدود اللي حول الإطار</td></tr>
             <tr><td>scrolling="no"</td><td>بيخفي الشريط اللي بيظهر لو الموقع طويل</td></tr>
-            <tr><td>&lt;object&gt;</td><td>نفس iframe</td></tr>
-            <tr><td>&lt;embed&gt;</td><td>نفس iframe</td></tr>
+            <tr><td>&lt;object&gt; / &lt;embed&gt;</td><td>نفس iframe — بديل قديم</td></tr>
           </table>
         </div>
       </div>
-
       <div class="block">
-        <div class="block-label">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="file-name">iframe — تضمين فيديو يوتيوب</div>
-        </div>
+        <div class="block-label"><div class="dot-row"><span></span><span></span><span></span></div><div class="file-name">iframe — تضمين فيديو يوتيوب</div></div>
         <div class="code-area"><pre><span class="t">&lt;iframe</span>
     <span class="a">width</span>=<span class="v">"500"</span>
     <span class="a">height</span>=<span class="v">"250"</span>
-    <span class="a">src</span>=<span class="v">"https://www.youtube.com/embed/o6As7cP3eIo?list=PLknwEmKsW8Ou..."</span><span class="t">&gt;</span>
+    <span class="a">src</span>=<span class="v">"https://www.youtube.com/embed/o6As7cP3eIo"</span><span class="t">&gt;</span>
 <span class="t">&lt;/iframe&gt;</span></pre></div>
         <div class="explain-area">
           <table>
@@ -1173,7 +1243,7 @@
             <tr><td>youtube.com/embed/</td><td>رابط التضمين من يوتيوب — بتاخده من زر Share ثم Embed</td></tr>
           </table>
         </div>
-        <div class="tip">ممكن نحط أي حاجة مكان الفيديو وهتنزل — iframe بيشتغل مع أي موقع أو فيديو أو PDF</div>
+        <div class="tip"><span class="tip-icon">💡</span> iframe بيشتغل مع أي موقع أو فيديو أو PDF — ممكن تحط أي رابط في src</div>
       </div>
     </section>
 
@@ -1181,6 +1251,7 @@
 </div>
 
 <script>
+  // Search
   const searchInput = document.getElementById('search');
   const sections = document.querySelectorAll('.section');
   searchInput.addEventListener('input', () => {
@@ -1191,6 +1262,7 @@
     });
   });
 
+  // Sidebar active link on scroll
   const navLinks = document.querySelectorAll('#sidenav a');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -1200,7 +1272,7 @@
         if (active) active.classList.add('active');
       }
     });
-  }, { threshold: 0.25, rootMargin: '-60px 0px 0px 0px' });
+  }, { threshold: 0.2, rootMargin: '-70px 0px 0px 0px' });
   sections.forEach(s => observer.observe(s));
 </script>
 </body>
